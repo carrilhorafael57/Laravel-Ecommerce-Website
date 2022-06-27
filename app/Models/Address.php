@@ -17,6 +17,8 @@ class Address extends Model
         'province',
     ];
 
+    protected $primaryKey = 'address_id';
+
     public function user()
     {
         return $this->hasOne("User");
