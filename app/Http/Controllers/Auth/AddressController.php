@@ -38,7 +38,7 @@ class AddressController extends Controller
         $request->validate([
             'street' => ['required', 'string', 'max:50'],
             'city' => ['required', 'string', 'max:40'],
-            'postcode' => ['required', 'max:10'],
+            'postcode' => ['required', 'regex:^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$'],
             'province' => ['required', 'max:2'],
         ]);
 

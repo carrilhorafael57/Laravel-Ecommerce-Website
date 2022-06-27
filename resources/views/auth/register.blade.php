@@ -79,10 +79,22 @@
             <div class="mt-4">
                 <x-label for="province" :value="__('Province')" />
 
-                <x-input id="province" class="block mt-1 w-full"
-                                type="text"
+                <select id="province" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 name="province"
-                                required />
+                                required > 
+                            <option value="AB">AB</option>
+                            <option value="ON">ON</option>
+                            <option value="NL">NL</option>
+                            <option value="PE">PE</option>
+                            <option value="NS">NS</option>
+                            <option value="NB">NB</option>
+                            <option value="QC">QC</option>
+                            <option value="MB">MB</option>
+                            <option value="SK">SK</option>
+                            <option value="YT">YT</option>
+                            <option value="NT">NT</option>
+                            <option value="NU">NU</option>
+                </select>
             </div>
 
 
