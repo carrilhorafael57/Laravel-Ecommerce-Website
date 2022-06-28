@@ -44,7 +44,7 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link :href="route('profile')"
+                            <x-dropdown-link :href="route('users.index')"
                             >
                             {{ __('Profile') }}
                             </x-dropdown-link>
@@ -72,7 +72,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('profile')" :active="request()->routeIs('profile')">
+            <x-responsive-nav-link :href="route('profile.index')" :active="request()->routeIs('profile')">
                 {{ __('Profile') }}
             </x-responsive-nav-link>
         </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,22 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',  [ProductController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// Route::get('user.profile', function () {
-//     return view('profile');
-// })->name('profile');
-
-Route::get('profile', [RegisteredUserController::class, 'profile_index'])
-    ->name('profile');
-
-
-
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('users', App\Http\Controllers\Auth\RegisteredUserController::class);
+});
 
 require __DIR__ . '/auth.php';

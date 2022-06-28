@@ -12,7 +12,10 @@
                    <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('profile') }}">
+        <form method="POST" action="{{ route('users.update', $user_info, $address_info) }}">
+
+            @method('PUT')
+
             @csrf
             
             <!-- Name -->

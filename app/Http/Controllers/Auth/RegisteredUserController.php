@@ -51,13 +51,13 @@ class RegisteredUserController extends Controller
             'province' => $request->input('province'),
         ]);
 
-        // dd($address->id);
+        // dd($address->address_id);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'address_id' => $address->id
+            'address_id' => $address->address_id
         ]);
 
 
@@ -68,16 +68,52 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
+    public function show(User $user)
+    {
+        $user_info = auth()->user();
+        $address_info = Address::find($user_info->address_id);
+        return view('users.show', compact('user_info', 'address_info'));
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function profile_index()
+    public function index()
     {
         $user_info = auth()->user();
         $address_info = Address::find($user_info->address_id);
-        return view('profile', compact('user_info', 'address_info'));
+        return view('users.index', compact('user_info', 'address_info'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     */
+    public function edit(User $user_info, Address $address_info)
+    {
+        $user_info = auth()->user();
+        $address_info = Address::find($user_info->address_id);
+        return view('users.edit', compact('user_info', 'address_info'));
+    }
+
+    public function update(Request $request, User $user, Address $address)
+    {
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $address->update([
+            'street' => $request->input('street'),
+            'city' => $request->input('city'),
+            'postcode' => $request->input('postcode'),
+            'province' => $request->input('province'),
+        ]);
+
+        return redirect()->route('users.index');
     }
 }
