@@ -46,9 +46,8 @@
             </nav>
         </header>
         <main> 
-            <h1 class="text-center py-12 text-xxl">Products</h1>      
+            <h1 class="text-center py-12 text-xxl">Product</h1>      
                 <div class="grid grid-cols-4 gap-4">
-                    @foreach ($products as $product)
                     <div class="font-bold w-60">
                         <div class="grid-item border-2">
                             <div>
@@ -78,9 +77,7 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    @endforeach
-                </div>         
+                    </div>     
         </main>
     </body>
 </html>

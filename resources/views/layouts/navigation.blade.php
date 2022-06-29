@@ -72,7 +72,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('profile.index')" :active="request()->routeIs('profile')">
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                 {{ __('Profile') }}
             </x-responsive-nav-link>
         </div>

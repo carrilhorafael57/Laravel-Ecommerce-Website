@@ -92,7 +92,7 @@ class RegisteredUserController extends Controller
      * Show the form for editing the specified resource.
      *
      */
-    public function edit(User $user_info, Address $address_info)
+    public function edit()
     {
         $user_info = auth()->user();
         $address_info = Address::find($user_info->address_id);

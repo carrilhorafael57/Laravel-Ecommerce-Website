@@ -17,12 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',  [ProductController::class, 'index']);
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', App\Http\Controllers\Auth\RegisteredUserController::class);
+    Route::resource('products', ProductController::class);
 });
 
 require __DIR__ . '/auth.php';

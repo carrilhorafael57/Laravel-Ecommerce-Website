@@ -12,7 +12,7 @@
                    <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="SUBMIT" action="{{ route('User.edit') }}">
+        <form method="SUBMIT" action="{{ route('users.edit', $user_info, $address_info)}}">
             @csrf
             
             <!-- Name -->
