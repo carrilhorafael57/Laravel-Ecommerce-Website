@@ -49,6 +49,39 @@
             </nav>  
         </header>
 
+        <main> 
+            <h1 class="text-center py-12 text-xxl">Products</h1>      
+                <div class="grid grid-cols-4 gap-4">
+                    @foreach ($products as $product)
+                    <div class="font-bold w-60">
+                        <div class="grid-item border-2">
+                            <div>
+                                <img alt="person capturing an image" src="{{$product->product_image}}" class="focus:outline-none w-full h-60" />
+                            </div>
+                            <div class="bg-white dark:bg-gray-800">
+                                <div class="flex items-center justify-between px-4 pt-4">
+                                    <div>
+                                        <img class="dark:bg-white focus:outline-none" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/4-by-2-col-grid-svg1.svg" alt="bookmark" />
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h2 class="focus:outline-none text-lg dark:text-white font-semibold">{{$product->product_name}} XS</h2>
+                                    </div>
+                                    <p class="focus:outline-none text-xs text-gray-600 dark:text-gray-200 mt-2">{{$product->product_desc}}</p>
+
+                                    <div class="flex items-center justify-between py-4">
+                                        <h2 class="focus:outline-none text-indigo-700 text-xs font-semibold">Amount Available: {{$product->quantity_in_stock}}</h2>
+                                        <h3 class="focus:outline-none text-indigo-700 text-xl font-semibold">${{$product->price}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>         
+        </main>
+
         
        
 

@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $products = Product::all();
+    return view('welcome', compact('products'));
 });
 
 Route::get('profile', [RegisteredUserController::class, 'profile_index'])
@@ -28,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('dashboard');
     })->name('dashboard');
 
-    
+
     Route::resource('users', \App\Http\Controllers\UserController::class);
 });
 
