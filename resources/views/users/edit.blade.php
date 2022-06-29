@@ -67,7 +67,7 @@
                                 value="{{$address_info->postcode}}" 
                                 />
             </div>
-
+            
             <!-- Province Name -->
             <div class="mt-4">
                 <x-label for="province" :value="__('Province')" />

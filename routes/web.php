@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,15 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', App\Http\Controllers\Auth\RegisteredUserController::class);
-    Route::resource('products', ProductController::class);
+    Route::get('profile', [UserController::class, 'show']);
+
+
+    Route::group(['middleware' => 'is_admin'], function () {
+        Route::resource('products', ProductController::class);
+        Route::resource('users_info', UserController::class);
+    });
 });
+
+
 
 require __DIR__ . '/auth.php';
