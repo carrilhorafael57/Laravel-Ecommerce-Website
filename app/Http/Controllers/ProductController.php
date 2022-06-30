@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -37,7 +37,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_name' => ['required', 'string', 'max:255', 'unique:products'],
+            'product_desc' => ['required', 'string', 'max:255'],
+            'quantity_in_stock' => ['required', 'numeric', 'max:1000'],
+            'price' => ['required', 'numeric', 'max:1000'],
+        ]);
+
+        Product::create([
+            'product_name' => $request->input('product_name'),
+            'product_desc' => $request->input('product_desc'),
+            'product_image' => $request->input('product_image'),
+            'quantity_in_stock' => $request->input('quantity_in_stock'),
+            'price' => $request->input('price')
+        ]);
+
+        return redirect()->route('products.admin_products');
     }
 
     /**

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Products') }}
+            {{ __('Admin Users') }}
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     
                     <div class="px-10 w-48 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-center align-center"> 
                         <button>
-                            <a href="{{ route('products.create') }}">Add a new Product</a>
+                            <a href="{{ route('users.create_admin') }}">Add a new User</a>
                         </button>
                     </div>
                     <br />
@@ -20,25 +20,23 @@
                     <table>
                         <thead>
                             <tr class="ml-5">
-                                <th>Product Name</th>
-                                <th class="mt-6" style="margin-left: 1.5rem">Quantity</th>
-                                <th class="ml-5" style="margin-left: 1.5rem">Price</th>
+                                <th>User Name</th>
+                                <th class="mt-6" style="margin-left: 1.5rem">Email</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $product)
+                            @foreach ($users as $user)
                                 <tr>
-                                   <td> {{$product->product_name}} </td>
-                                   <td class="ml-5 text-center">{{ $product->quantity_in_stock }}</td>
-                                   <td class="ml-5 text-center" style="margin-left: 1.5rem">{{ $product->price }}</td>
+                                   <td> {{$user->name}} </td>
+                                   <td class="ml-5 text-center">{{ $user->email }}</td>
                                    <td class="text-center" style="margin-left: 1.5rem">
                                     <div class="px-10 w-100 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-center"> 
                                         <button>
-                                            <a href=" {{ route('products.edit', $product) }} "> Edit </a>
+                                            <a href=" {{ route('users.edit', $user) }} "> Edit </a>
                                         </button>
                                     </div>
                                     <div class="w-100 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-center"> 
-                                        <form method="POST" action=" {{route('products.destroy', $product)}} ">
+                                        <form method="POST" action=" {{route('users.destroy', $user)}} ">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>

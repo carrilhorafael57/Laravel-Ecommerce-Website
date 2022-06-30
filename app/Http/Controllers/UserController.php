@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -14,7 +21,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        return view('users.userslist', compact('users'));
     }
 
     /**
@@ -24,7 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -35,7 +44,33 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'street' => ['required', 'string', 'max:50'],
+            'city' => ['required', 'string', 'max:20'],
+            'postcode' => ['required', 'regex:^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$^'],
+            'province' => ['required', 'max:2'],
+        ]);
+
+        $address =  Address::create([
+            'street' => $request->input('street'),
+            'city' => $request->input('city'),
+            'postcode' => $request->input('postcode'),
+            'province' => $request->input('province'),
+        ]);
+
+        // dd($address->address_id);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'address_id' => $address->address_id
+        ]);
+
+        return redirect()->route('users_info.index');
     }
 
     /**
@@ -81,5 +116,10 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+
+    public function admin_register_user(Request $request)
+    {
     }
 }
