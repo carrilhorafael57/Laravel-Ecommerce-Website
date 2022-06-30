@@ -84,4 +84,12 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function admin_products()
+    {
+
+        $products = Product::all();
+
+        return view('products.productslist', compact('products'));
+    }
 }

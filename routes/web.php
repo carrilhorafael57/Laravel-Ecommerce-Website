@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => 'is_admin'], function () {
         Route::resource('products', ProductController::class);
         Route::resource('users_info', UserController::class);
+        Route::get('/products/admin', [ProductController::class, 'admin_products'])->name('products.admin_products');
     });
 });
 
