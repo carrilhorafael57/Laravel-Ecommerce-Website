@@ -32,5 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('users_info', UserController::class);
         Route::get('/products/admin', [ProductController::class, 'admin_products'])->name('products.admin_products');
     });
+});
 
 require __DIR__ . '/auth.php';
