@@ -12,7 +12,10 @@
                    <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('profile') }}">
+        <form method="POST" action="{{ route('users.update', $user_info, $address_info) }}">
+
+            @method('PUT')
+
             @csrf
             
             <!-- Name -->
@@ -64,7 +67,7 @@
                                 value="{{$address_info->postcode}}" 
                                 />
             </div>
-
+            
             <!-- Province Name -->
             <div class="mt-4">
                 <x-label for="province" :value="__('Province')" />
@@ -92,7 +95,7 @@
 
             <div class="flex items-center justify-center mt-4">
                 <x-button class="ml-4">
-                    {{ __('Update Profile') }}
+                    {{ __('Save') }}
                 </x-button>
             </div>
         </form>

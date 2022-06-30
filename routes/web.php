@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,24 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',  [ProductController::class, 'index']);
 
-Route::get('profile', [RegisteredUserController::class, 'profile_index'])
-    ->name('profile');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-//creating a group of logged user in order to access the dashboard for edting
 Route::group(['middleware' => ['auth']], function () {
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    
-    Route::resource('users', \App\Http\Controllers\UserController::class);
-});
+    Route::resource('users', App\Http\Controllers\Auth\RegisteredUserController::class);
+    Route::get('profile', [UserController::class, 'show']);
 
 
+    Route::group(['middleware' => 'is_admin'], function () {
+        Route::resource('products', ProductController::class);
+        Route::resource('users_info', UserController::class);
+        Route::get('/products/admin', [ProductController::class, 'admin_products'])->name('products.admin_products');
+    });
 
 require __DIR__ . '/auth.php';
