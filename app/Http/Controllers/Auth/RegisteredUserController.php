@@ -44,21 +44,23 @@ class RegisteredUserController extends Controller
             'province' => ['required', 'max:2'],
         ]);
 
-        $address =  Address::create([
-            'street' => $request->input('street'),
-            'city' => $request->input('city'),
-            'postcode' => $request->input('postcode'),
-            'province' => $request->input('province'),
-        ]);
-
-        // dd($address->address_id);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'address_id' => $address->address_id
+            // 'address_id' => $address->address_id
         ]);
+
+        Address::create([
+            'street' => $request->input('street'),
+            'city' => $request->input('city'),
+            'postcode' => $request->input('postcode'),
+            'province' => $request->input('province'),
+            'user_id' => $user->id
+        ]);
+
+        // dd($address->address_id);
+
 
 
         event(new Registered($user));
@@ -95,7 +97,7 @@ class RegisteredUserController extends Controller
     public function edit()
     {
         $user_info = auth()->user();
-        $address_info = Address::find($user_info->address_id);
+        $address_info = User::find($user_info->id)->address;
         return view('users.edit', compact('user_info', 'address_info'));
     }
 

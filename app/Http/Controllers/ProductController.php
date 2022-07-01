@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -74,7 +75,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -86,7 +87,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+
+        $request->validate([
+            'product_name' => ['required', 'string', 'max:255'],
+            'product_desc' => ['required', 'string', 'max:255'],
+            'quantity_in_stock' => ['required', 'numeric', 'max:1000'],
+            'price' => ['required', 'numeric', 'max:1000'],
+            Rule::unique('products')->ignore($product->id)
+        ]);
+
+        $product->update([
+            'product_name' => $request->input('product_name'),
+            'product_desc' => $request->input('product_desc'),
+            'product_image' => $request->input('product_image'),
+            'quantity_in_stock' => $request->input('quantity_in_stock'),
+            'price' => $request->input('price')
+        ]);
+
+        return redirect()->route('products.admin_products');
     }
 
     /**
@@ -97,7 +115,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('products.admin_products');
     }
 
     public function admin_products()

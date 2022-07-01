@@ -37,7 +37,7 @@
                                 type="text"
                                 name="street"
                                 required 
-                                value='{{$address_info->street}}'
+                                value='{{ $address_info->street }}'
                                 readonly
                                 />
             </div>

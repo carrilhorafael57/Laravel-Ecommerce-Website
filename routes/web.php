@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('users_info', UserController::class);
         Route::get('/viewproducts/admin', [ProductController::class, 'admin_products'])->name('products.admin_products');
         Route::get('/admin/createuser', [UserController::class, 'create'])->name('users.create_admin');
+        // Route::delete('/users_info/{id}', [UserController::class, 'destroy'])->name('users_info.destroy');
     });
 });
 

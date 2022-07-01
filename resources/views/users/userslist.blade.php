@@ -32,11 +32,11 @@
                                    <td class="text-center" style="margin-left: 1.5rem">
                                     <div class="px-10 w-100 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-center"> 
                                         <button>
-                                            <a href=" {{ route('users.edit', $user) }} "> Edit </a>
+                                            <a href="{{route('users_info.edit', $user)}}"> Edit </a>
                                         </button>
                                     </div>
                                     <div class="w-100 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow text-center"> 
-                                        <form method="POST" action=" {{route('users.destroy', $user)}} ">
+                                        <form method="POST" action="{{route('users_info.destroy', $user)}}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>

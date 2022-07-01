@@ -15,12 +15,13 @@ class Address extends Model
         'city',
         'postcode',
         'province',
+        'user_id'
     ];
 
-    protected $primaryKey = 'address_id';
+    // protected $primaryKey = 'address_id';
 
     public function user()
     {
-        return $this->hasOne("User");
+        return $this->belongsTo("User");
     }
 }

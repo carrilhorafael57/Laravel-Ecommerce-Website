@@ -11,6 +11,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller
 {
@@ -54,20 +55,19 @@ class UserController extends Controller
             'province' => ['required', 'max:2'],
         ]);
 
-        $address =  Address::create([
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            // 'address_id' => $address->address_id
+        ]);
+
+        Address::create([
             'street' => $request->input('street'),
             'city' => $request->input('city'),
             'postcode' => $request->input('postcode'),
             'province' => $request->input('province'),
-        ]);
-
-        // dd($address->address_id);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'address_id' => $address->address_id
+            'user_id' => $user->id
         ]);
 
         return redirect()->route('users_info.index');
@@ -90,9 +90,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($user)
     {
-        //
+        $user = User::find($user);
+        $address_info = User::find($user->id)->address;
+        return view('users.edit', compact('user', 'address_info'));
     }
 
     /**
@@ -102,9 +104,26 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user)
     {
-        //
+        $user = User::find($user);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $address = User::find($user->id)->address;
+
+        $address->update([
+            'street' => $request->street,
+            'city' => $request->city,
+            'postcode' => $request->postcode,
+            'province' => $request->province,
+        ]);
+
+        return redirect()->route('users_info.index');
     }
 
     /**
@@ -113,13 +132,22 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user_address = User::find($id)->address;
+        $user->delete();
+        $user_address->delete();
+
+        return redirect()->route('users_info.index');
     }
 
 
-    public function admin_register_user(Request $request)
-    {
-    }
+    // public function destroy(User $user)
+    // {
+    //     // $user = User::find($id);
+    //     $user->delete();
+
+    //     return redirect()->route('users_info.index');
+    // }
 }
