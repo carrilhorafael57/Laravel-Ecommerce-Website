@@ -17,30 +17,31 @@
             @method('PUT')
 
             @csrf
-            
+
             <!-- Name -->
             <div>
                 <x-label for="name" :value="__('Name')" />
-                
+
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{$user->name}}" required autofocus />
             </div>
-            
+
             <!-- Email Address -->
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
-                
+
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" value="{{$user->email}}" required />
             </div>
 
             <!-- Street Name -->
+
             <div class="mt-4">
                 <x-label for="street" :value="__('Street')" />
 
                 <x-input id="street" class="block mt-1 w-full"
                                 type="text"
                                 name="street"
-                                required 
-                                value='{{$address_info->street}}'
+                                required
+                                value='{{$address_info->street ?? null}}'
                                 />
             </div>
 
@@ -51,8 +52,8 @@
                 <x-input id="city" class="block mt-1 w-full"
                                 type="text"
                                 name="city"
-                                required 
-                                value='{{$address_info->city}}'
+                                required
+                                value='{{$address_info->city ?? null}}'
                                 />
             </div>
 
@@ -64,19 +65,19 @@
                                 type="text"
                                 name="postcode"
                                 required
-                                value="{{$address_info->postcode}}" 
+                                value="{{$address_info->postcode ?? null}}"
                                 />
             </div>
-            
+
             <!-- Province Name -->
             <div class="mt-4">
                 <x-label for="province" :value="__('Province')" />
 
                 <select id="province" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 name="province"
-                                required 
-                                selected='{{$address_info->province}}'
-                                > 
+                                required
+                                selected='{{$address_info->province ?? null}}'
+                                >
                             <option value="AB">AB</option>
                             <option value="ON">ON</option>
                             <option value="NL">NL</option>
@@ -91,7 +92,6 @@
                             <option value="NU">NU</option>
                 </select>
             </div>
-
 
             <div class="flex items-center justify-center mt-4">
                 <x-button class="ml-4">

@@ -9,7 +9,6 @@ class Address extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'street',
         'city',
@@ -17,8 +16,6 @@ class Address extends Model
         'province',
         'user_id'
     ];
-
-    // protected $primaryKey = 'address_id';
 
     public function user()
     {

@@ -86,7 +86,7 @@ class RegisteredUserController extends Controller
     public function index()
     {
         $user_info = auth()->user();
-        $address_info = Address::find($user_info->address_id);
+        $address_info = $user_info->address;
         return view('users.index', compact('user_info', 'address_info'));
     }
 

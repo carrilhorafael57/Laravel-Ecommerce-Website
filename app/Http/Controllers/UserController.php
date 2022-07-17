@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Symfony\Component\Console\Input\Input;
+use App\Http\Request\User\StoreRequest;
 
 class UserController extends Controller
 {
@@ -43,46 +44,14 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'street' => ['required', 'string', 'max:50'],
-            'city' => ['required', 'string', 'max:20'],
-            'postcode' => ['required', 'regex:^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$^'],
-            'province' => ['required', 'max:2'],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            // 'address_id' => $address->address_id
-        ]);
-
-        Address::create([
-            'street' => $request->input('street'),
-            'city' => $request->input('city'),
-            'postcode' => $request->input('postcode'),
-            'province' => $request->input('province'),
-            'user_id' => $user->id
-        ]);
+        $user = User::create($request->validated());
+        $user->address->create($request->validated());
 
         return redirect()->route('users_info.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -92,8 +61,10 @@ class UserController extends Controller
      */
     public function edit($user)
     {
-        $user = User::find($user);
-        $address_info = User::find($user->id)->address;
+        $user = User::findOrFail($user);
+        $address_info = $user->address ?? null;
+
+
         return view('users.edit', compact('user', 'address_info'));
     }
 
@@ -104,23 +75,20 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user)
+    public function update(Request $request, $userId)
     {
-        $user = User::find($user);
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $address = User::find($user->id)->address;
-
-        $address->update([
+        $user = User::findOrFail($userId);
+        $address = Address::create([
             'street' => $request->street,
             'city' => $request->city,
             'postcode' => $request->postcode,
             'province' => $request->province,
+            'user_id' => $user->id
+        ]);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect()->route('users_info.index');
@@ -135,19 +103,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user_address = User::find($id)->address;
+        if($address = $user->address){
+            $address->delete();
+        }
         $user->delete();
-        $user_address->delete();
 
         return redirect()->route('users_info.index');
     }
-
-
-    // public function destroy(User $user)
-    // {
-    //     // $user = User::find($id);
-    //     $user->delete();
-
-    //     return redirect()->route('users_info.index');
-    // }
 }
